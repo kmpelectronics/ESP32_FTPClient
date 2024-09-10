@@ -1,4 +1,3 @@
-#include <WiFiClient.h>
 #include "ESP32_FTPClient.h"
 
 ESP32_FTPClient::ESP32_FTPClient(char* _serverAdress, uint16_t _port, char* _userName, char* _passWord, uint16_t _timeout, uint8_t _verbose){
@@ -19,7 +18,7 @@ ESP32_FTPClient::ESP32_FTPClient(char* _serverAdress, char* _userName, char* _pa
   verbose = _verbose;
 }
 
-WiFiClient* ESP32_FTPClient::GetDataClient() {
+EthernetClient* ESP32_FTPClient::GetDataClient() {
   return &dclient;
 }
 
@@ -42,7 +41,7 @@ void ESP32_FTPClient::GetLastModifiedTime(const char  * fileName, char* result) 
   GetFTPAnswer (result, 4);
 }
 
-void ESP32_FTPClient::WriteClientBuffered(WiFiClient* cli, unsigned char * data, int dataLength) {
+void ESP32_FTPClient::WriteClientBuffered(EthernetClient* cli, unsigned char * data, int dataLength) {
   if(!isConnected()) return;
 
   size_t clientCount = 0;
@@ -139,7 +138,7 @@ void ESP32_FTPClient::CloseConnection() {
 void ESP32_FTPClient::OpenConnection() {
   FTPdbg(F("Connecting to: "));
   FTPdbgn(serverAdress);
-  if( client.connect(serverAdress, port, timeout) )
+  if( client.connect(serverAdress, port) )
   {
     FTPdbgn(F("Command connected"));
   }
@@ -213,7 +212,7 @@ void ESP32_FTPClient::InitFile(const char* type){
   FTPdbg(F("Data port: "));
   hiPort = hiPort | loPort;
   FTPdbgn(hiPort);
-  if (dclient.connect(pasvServer, hiPort, timeout)) {
+  if (dclient.connect(pasvServer, hiPort)) {
     FTPdbgn(F("Data connection established"));
   }
 }

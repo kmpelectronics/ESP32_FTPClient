@@ -1,11 +1,12 @@
+#include <Ethernet.h>
 class ESP32_FTPClient
 {
   private:
-  void WriteClientBuffered(WiFiClient* cli, unsigned char * data, int dataLength);
+  void WriteClientBuffered(EthernetClient* cli, unsigned char * data, int dataLength);
   char outBuf[128];
   unsigned char outCount;
-  WiFiClient client;
-  WiFiClient dclient;
+  EthernetClient client;
+  EthernetClient dclient;
   uint8_t verbose;
 
   template<typename T>
@@ -31,7 +32,7 @@ class ESP32_FTPClient
   unsigned char clientBuf[1500];
   size_t bufferSize = 1500;
   uint16_t timeout = 10000;
-  WiFiClient* GetDataClient();
+  EthernetClient* GetDataClient();
   
   public:
   ESP32_FTPClient(char* _serverAdress, uint16_t _port, char* _userName, char* _passWord, uint16_t _timeout = 10000, uint8_t _verbose = 1);
